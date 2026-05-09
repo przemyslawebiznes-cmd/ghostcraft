@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GhostCraft – Formularz zamówienia</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Syne:wght@600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#B8922A;--gold2:#D4A830;--g3:#EBC04A;
+  --gr:#1E4A38;--gr2:#2A6650;
+  --bg:#FDFAF6;--bg2:#F5F1EA;
+  --t:#1A1510;--m:rgba(26,21,16,.58);--d:rgba(26,21,16,.32);
+  --b:rgba(184,146,42,.22);--b2:rgba(26,21,16,.1);
+  --r:12px;--rl:20px;
+  --ease:cubic-bezier(.25,.46,.45,.94);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--t);font-family:'DM Sans',sans-serif;font-weight:300;min-height:100vh}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-thumb{background:var(--gold);border-radius:2px}
+
+.ph{background:#fff;border-bottom:1px solid var(--b2);padding:18px 5%;display:flex;align-items:center;justify-content:space-between;box-shadow:0 1px 8px rgba(26,21,16,.05);position:sticky;top:0;z-index:100}
+.logo{font-family:'Cormorant Garamond',serif;font-size:1.55rem;font-weight:600;letter-spacing:.06em;color:var(--t);text-decoration:none}
+.logo em{color:var(--gold);font-style:normal}
+.hstep{font-family:'Syne',sans-serif;font-size:.68rem;font-weight:700;letter-spacing:.12em;color:var(--gold)}
+
+.hero{background:linear-gradient(135deg,var(--gr),var(--gr2));padding:52px 5% 48px;position:relative;overflow:hidden;text-align:center}
+.hero::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);background-size:48px 48px}
+.hero::after{content:'';position:absolute;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(184,146,42,.15),transparent 70%);top:-150px;right:-80px;pointer-events:none}
+.htag{display:inline-flex;align-items:center;gap:9px;background:rgba(184,146,42,.15);border:1px solid rgba(184,146,42,.3);padding:7px 18px;border-radius:100px;margin-bottom:22px;position:relative;z-index:1}
+.hdot{width:6px;height:6px;border-radius:50%;background:var(--g3);box-shadow:0 0 8px var(--g3)}
+.htagtxt{font-family:'Syne',sans-serif;font-size:.68rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--g3)}
+.hh1{font-family:'Cormorant Garamond',serif;font-size:clamp(2.2rem,4vw,3.6rem);font-weight:600;color:#fff;line-height:1.12;margin-bottom:12px;position:relative;z-index:1}
+.hh1 em{color:var(--g3);font-style:italic}
+.hsub{font-size:.95rem;color:rgba(255,255,255,.65);line-height:1.8;max-width:540px;margin:0 auto;position:relative;z-index:1}
+.hsub strong{color:rgba(255,255,255,.9);font-weight:500}
+
+.pb{background:var(--bg2);border-bottom:1px solid var(--b2);padding:12px 5%;display:flex;align-items:center;overflow-x:auto;scrollbar-width:none}
+.pb::-webkit-scrollbar{display:none}
+.pbs{display:flex;align-items:center;flex-shrink:0}
+.pbd{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:.58rem;font-weight:700;border:1.5px solid var(--b2);color:var(--d);background:#fff;transition:all .4s}
+.pbd.a{background:var(--gold);border-color:var(--gold);color:#fff;box-shadow:0 0 0 3px rgba(184,146,42,.15)}
+.pbd.done{background:var(--gr);border-color:var(--gr);color:#fff}
+.pbl{font-family:'Syne',sans-serif;font-size:.58rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--d);margin-left:7px;white-space:nowrap}
+.pbl.a{color:var(--gold)}
+.pbl2{width:28px;height:1px;background:var(--b2);margin:0 5px;flex-shrink:0}
+
+.fw{max-width:860px;margin:0 auto;padding:52px 5% 90px}
+.fs{background:#fff;border:1.5px solid var(--b2);border-radius:var(--rl);padding:40px 44px;margin-bottom:24px;box-shadow:0 2px 16px rgba(26,21,16,.06);transition:box-shadow .4s,border-color .4s;position:relative;overflow:hidden}
+.fs::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--gold2));transform:scaleX(0);transform-origin:left;transition:transform .5s var(--ease)}
+.fs:focus-within{border-color:var(--b);box-shadow:0 12px 48px rgba(26,21,16,.1),0 0 0 1px var(--b)}
+.fs:focus-within::before{transform:scaleX(1)}
+.fsh{display:flex;align-items:flex-start;gap:16px;margin-bottom:32px}
+.fsn{flex-shrink:0;width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold2));color:#fff;font-family:'Syne',sans-serif;font-size:.78rem;font-weight:700;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(184,146,42,.25)}
+.fsi{font-size:1.3rem}
+.fst{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:600;color:var(--t);margin-bottom:3px;line-height:1.2}
+.fsd{font-size:.84rem;color:var(--m);line-height:1.6}
+
+.fg{display:flex;flex-direction:column;gap:5px;margin-bottom:18px}
+.fg:last-child{margin-bottom:0}
+.fg label{font-family:'Syne',sans-serif;font-size:.64rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--m)}
+.req{color:var(--gold);margin-left:2px}
+.opt{color:var(--d);font-weight:500;text-transform:none;letter-spacing:0;font-size:.7rem;margin-left:4px}
+input[type=text],input[type=email],input[type=tel],textarea,select{background:var(--bg);border:1.5px solid var(--b2);border-radius:var(--r);padding:13px 16px;color:var(--t);font-family:'DM Sans',sans-serif;font-size:.92rem;font-weight:300;transition:all .3s var(--ease);outline:none;width:100%;-webkit-appearance:none;appearance:none}
+input:focus,textarea:focus,select:focus{border-color:var(--gold);background:#fff;box-shadow:0 0 0 3px rgba(184,146,42,.1)}
+input::placeholder,textarea::placeholder{color:var(--d);font-style:italic}
+textarea{resize:vertical;min-height:110px;line-height:1.7}
+.sw{position:relative}
+.sw select{padding-right:40px;cursor:pointer}
+.sw::after{content:'▾';position:absolute;right:14px;top:50%;transform:translateY(-50%);color:var(--gold);pointer-events:none}
+.fr{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:620px){.fr{grid-template-columns:1fr}}
+.hint{font-size:.76rem;color:var(--d);margin-top:5px;line-height:1.5;font-style:italic}
+
+.rg{display:flex;flex-direction:column;gap:11px}
+.rc{display:flex;align-items:center;gap:14px;padding:16px 20px;border:1.5px solid var(--b2);border-radius:var(--r);cursor:pointer;transition:all .3s var(--ease);background:#fff;position:relative;overflow:hidden}
+.rc::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(184,146,42,.07),transparent);opacity:0;transition:opacity .3s}
+.rc:hover{border-color:var(--b)}
+.rc input[type=radio]{display:none}
+.ri{width:20px;height:20px;border-radius:50%;border:2px solid var(--b2);background:#fff;flex-shrink:0;display:flex;align-items:center;justify-content:center;position:relative;z-index:1;transition:all .3s}
+.ri::after{content:'';width:9px;height:9px;border-radius:50%;background:var(--gold);transform:scale(0);transition:transform .25s var(--ease)}
+.rc:has(input:checked){border-color:var(--gold);background:rgba(184,146,42,.03)}
+.rc:has(input:checked)::before{opacity:1}
+.rc:has(input:checked) .ri{border-color:var(--gold)}
+.rc:has(input:checked) .ri::after{transform:scale(1)}
+.rcon{flex:1;position:relative;z-index:1}
+.rtt{font-family:'Syne',sans-serif;font-size:.86rem;font-weight:600;color:var(--t);margin-bottom:2px}
+.rds{font-size:.78rem;color:var(--m);line-height:1.5}
+.rico{font-size:1.4rem;position:relative;z-index:1}
+.rprice{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;color:var(--gold);flex-shrink:0;position:relative;z-index:1}
+
+.cg{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+@media(max-width:540px){.cg{grid-template-columns:1fr}}
+.ci{display:flex;align-items:center;gap:11px;padding:12px 14px;border:1.5px solid var(--b2);border-radius:10px;cursor:pointer;transition:all .28s;background:#fff}
+.ci:hover{border-color:var(--b);background:rgba(184,146,42,.04)}
+.ci input[type=checkbox]{display:none}
+.cb{width:19px;height:19px;border-radius:5px;border:2px solid var(--b2);background:#fff;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.6rem;transition:all .25s}
+.ci:has(input:checked){border-color:var(--gold);background:rgba(184,146,42,.04)}
+.ci:has(input:checked) .cb{background:var(--gold);border-color:var(--gold)}
+.ci:has(input:checked) .cb::after{content:'✓';font-weight:700}
+.clbl{font-size:.86rem;color:var(--t);line-height:1.4}
+.cico{font-size:.95rem;flex-shrink:0}
+
+.sd{display:flex;align-items:center;gap:14px;margin:6px 0 24px}
+.sdl{flex:1;height:1px;background:var(--b2)}
+.sdt{font-family:'Syne',sans-serif;font-size:.6rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--d);white-space:nowrap}
+
+.cs{background:linear-gradient(135deg,rgba(30,74,56,.06),rgba(30,74,56,.03));border:1.5px solid rgba(30,74,56,.15);border-radius:var(--rl);padding:32px 40px;margin-bottom:24px}
+.csh{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:600;color:var(--gr);margin-bottom:22px}
+.csit{display:flex;align-items:flex-start;gap:13px;padding:14px 0;border-bottom:1px solid rgba(30,74,56,.1);cursor:pointer}
+.csit:last-child{border-bottom:none;padding-bottom:0}
+.csit input{display:none}
+.csbx{width:21px;height:21px;border-radius:5px;flex-shrink:0;margin-top:1px;border:2px solid rgba(30,74,56,.3);background:#fff;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.68rem;font-weight:700;transition:all .25s}
+.csit:has(input:checked) .csbx{background:var(--gr);border-color:var(--gr)}
+.csit:has(input:checked) .csbx::after{content:'✓'}
+.cstxt{font-size:.88rem;color:rgba(26,21,16,.68);line-height:1.72}
+.cstxt a{color:var(--gr);text-decoration:underline}
+.cstxt strong{color:var(--gr);font-weight:600}
+
+.sbw{text-align:center;padding:16px 0}
+.sbn{font-size:.82rem;color:var(--m);line-height:1.7;margin-bottom:28px;max-width:480px;margin-left:auto;margin-right:auto}
+.sb{display:inline-flex;align-items:center;gap:12px;background:linear-gradient(135deg,var(--gr),var(--gr2));color:#fff;font-family:'Syne',sans-serif;font-size:.88rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:20px 52px;border-radius:6px;border:none;cursor:pointer;transition:all .4s;box-shadow:0 8px 28px rgba(30,74,56,.25);position:relative;overflow:hidden}
+.sb::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--gr2),#3A8066);opacity:0;transition:opacity .35s}
+.sb:hover{transform:translateY(-2px);box-shadow:0 16px 44px rgba(30,74,56,.32)}
+.sb:hover::before{opacity:1}
+.sb span{position:relative;z-index:1}
+.sb .arr{transition:transform .3s}
+.sb:hover .arr{transform:translateX(4px)}
+.trust{display:flex;align-items:center;justify-content:center;gap:24px;margin-top:24px;flex-wrap:wrap}
+.ti{display:flex;align-items:center;gap:6px;font-size:.76rem;color:var(--d);font-family:'Syne',sans-serif;font-weight:600;letter-spacing:.06em}
+.tic{color:var(--gold)}
+
+.rv{opacity:0;transform:translateY(20px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
+.rv.vis{opacity:1;transform:none}
+@media(max-width:680px){.fs{padding:26px 20px}.cs{padding:24px 20px}.fst{font-size:1.3rem}.sb{padding:18px 32px;font-size:.8rem}.pbl{display:none}.pbl2{width:18px}}
+</style>
+</head>
+<body>
+
+<header class="ph">
+  <a href="#" class="logo">Ghost<em>Craft</em></a>
+  <span class="hstep" id="si">Sekcja 1 / 12</span>
+</header>
+
+<div class="hero">
+  <div class="htag"><div class="hdot"></div><span class="htagtxt">Nowy projekt · GhostCraft Studio</span></div>
+  <h1 class="hh1">Stwórz swój ebook<br>lub <em>własną książkę</em></h1>
+  <p class="hsub">Wypełnij formularz, a my przygotujemy <strong>bezpłatną wycenę</strong> w ciągu 24 godzin. Zero zobowiązań.</p>
+</div>
+
+<div class="pb">
+  <div class="pbs"><div class="pbd a" id="pb1">1</div><span class="pbl a">Kontakt</span></div><div class="pbl2"></div>
+  <div class="pbs"><div class="pbd" id="pb2">2</div><span class="pbl">Projekt</span></div><div class="pbl2"></div>
+  <div class="pbs"><div class="pbd" id="pb3">3</div><span class="pbl">Temat</span></div><div class="pbl2"></div>
+  <div class="pbs"><div class="pbd" id="pb4">4</div><span class="pbl">Cel</span></div><div class="pbl2"></div>
+  <div class="pbs"><div class="pbd" id="pb5">5</div><span class="pbl">Zakres</span></div><div class="pbl2"></div>
+  <div class="pbs"><div class="pbd" id="pb6">6</div><span class="pbl">Styl</span></div><div class="pbl2"></div>
+  <div class="pbs"><div class="pbd" id="pb7">7</div><span class="pbl">Objętość</span></div><div class="pbl2"></div>
+  <div class="pbs"><div class="pbd" id="pb8">8</div><span class="pbl">Materiały</span></div><div class="pbl2"></div>
+  <div class="pbs"><div class="pbd" id="pb9">9</div><span class="pbl">Inspiracje</span></div><div class="pbl2"></div>
+  <div class="pbs"><div class="pbd" id="pb10">10</div><span class="pbl">Termin</span></div><div class="pbl2"></div>
+  <div class="pbs"><div class="pbd" id="pb11">11</div><span class="pbl">Uwagi</span></div><div class="pbl2"></div>
+  <div class="pbs"><div class="pbd" id="pb12">12</div><span class="pbl">Zgody</span></div>
+</div>
+
+<div class="fw">
+
+<!-- ════════════════════════════════════════
+  NETLIFY FORMS – atrybut "netlify" i "name"
+  są wymagane żeby Netlify wykrył formularz
+════════════════════════════════════════ -->
+<form name="ghostcraft-zamowienie"
+      method="POST"
+      data-netlify="true"
+      netlify-honeypot="bot-field"
+      id="mf">
+
+  <!-- Wymagane przez Netlify -->
+  <input type="hidden" name="form-name" value="ghostcraft-zamowienie">
+  <input type="hidden" name="bot-field" style="display:none">
+
+<!-- 1. DANE KONTAKTOWE -->
+<div class="fs rv" id="sec1">
+  <div class="fsh"><div class="fsn">1</div><div>
+    <div style="display:flex;align-items:center;gap:10px"><span class="fsi">👤</span><div class="fst">Dane kontaktowe</div></div>
+    <div class="fsd">Jak się z Tobą skontaktujemy po otrzymaniu formularza.</div>
+  </div></div>
+  <div class="fr">
+    <div class="fg"><label>Imię i nazwisko <span class="req">*</span></label><input type="text" name="Imie i nazwisko" placeholder="np. Anna Kowalska" required></div>
+    <div class="fg"><label>Adres e-mail <span class="req">*</span></label><input type="email" name="Email" placeholder="anna@twojamarka.pl" required></div>
+  </div>
+  <div class="fr">
+    <div class="fg"><label>Numer telefonu</label><input type="tel" name="Telefon" placeholder="+48 000 000 000"></div>
+    <div class="fg"><label>Nazwa marki / pseudonim <span class="opt">(opcjonalnie)</span></label><input type="text" name="Nazwa marki" placeholder="np. Coach Anna lub Studio XYZ"></div>
+  </div>
+</div>
+
+<!-- 2. RODZAJ PROJEKTU -->
+<div class="fs rv" id="sec2">
+  <div class="fsh"><div class="fsn">2</div><div>
+    <div style="display:flex;align-items:center;gap:10px"><span class="fsi">📚</span><div class="fst">Rodzaj projektu</div></div>
+    <div class="fsd">Wybierz, co chcesz stworzyć.</div>
+  </div></div>
+  <div class="rg">
+    <label class="rc"><input type="radio" name="Rodzaj projektu" value="Ebook cyfrowy – od 399 zł" checked><div class="ri"></div><div class="rico">📱</div><div class="rcon"><div class="rtt">Ebook (cyfrowy)</div><div class="rds">PDF + EPUB gotowy do sprzedaży online, Empik Go lub Amazon Kindle</div></div><div class="rprice">od 399 zł</div></label>
+    <label class="rc"><input type="radio" name="Rodzaj projektu" value="Książka drukowana – od 1299 zł"><div class="ri"></div><div class="rico">📖</div><div class="rcon"><div class="rtt">Książka drukowana</div><div class="rds">Profesjonalny skład do druku, Amazon KDP lub własny nakład</div></div><div class="rprice">od 1 299 zł</div></label>
+    <label class="rc"><input type="radio" name="Rodzaj projektu" value="Ebook + książka drukowana – od 2499 zł"><div class="ri"></div><div class="rico">💎</div><div class="rcon"><div class="rtt">Ebook + książka drukowana</div><div class="rds">Kompletna produkcja – cyfrowa i drukowana, grafiki, dystrybucja</div></div><div class="rprice">od 2 499 zł</div></label>
+  </div>
+</div>
+
+<!-- 3. TEMATYKA -->
+<div class="fs rv" id="sec3">
+  <div class="fsh"><div class="fsn">3</div><div>
+    <div style="display:flex;align-items:center;gap:10px"><span class="fsi">💡</span><div class="fst">Tematyka książki / ebooka</div></div>
+    <div class="fsd">Im więcej powiesz, tym lepiej dopasujemy treść i wycenę.</div>
+  </div></div>
+  <div class="fg"><label>Opis tematu <span class="req">*</span></label>
+    <textarea name="Temat ebooka" rows="5" placeholder="Opisz krótko temat swojej książki lub ebooka. Kim jest Twój czytelnik? Jakie problemy rozwiązujesz? Co chcesz przekazać?" required></textarea>
+    <div class="hint">💡 Nie musisz mieć gotowego tekstu – wystarczy pomysł i wiedza.</div>
+  </div>
+</div>
+
+<!-- 4. CEL -->
+<div class="fs rv" id="sec4">
+  <div class="fsh"><div class="fsn">4</div><div>
+    <div style="display:flex;align-items:center;gap:10px"><span class="fsi">🎯</span><div class="fst">Cel ebooka / książki</div></div>
+    <div class="fsd">Możesz zaznaczyć kilka opcji.</div>
+  </div></div>
+  <div class="cg">
+    <label class="ci"><input type="checkbox" name="Cel" value="Sprzedaż online"><div class="cb"></div><span class="cico">🛒</span><span class="clbl">Sprzedaż online</span></label>
+    <label class="ci"><input type="checkbox" name="Cel" value="Budowa marki osobistej"><div class="cb"></div><span class="cico">👑</span><span class="clbl">Budowa marki osobistej</span></label>
+    <label class="ci"><input type="checkbox" name="Cel" value="Lead magnet – bezpłatny"><div class="cb"></div><span class="cico">🧲</span><span class="clbl">Lead magnet (bezpłatny)</span></label>
+    <label class="ci"><input type="checkbox" name="Cel" value="Edukacja klientów"><div class="cb"></div><span class="cico">📚</span><span class="clbl">Edukacja klientów</span></label>
+    <label class="ci"><input type="checkbox" name="Cel" value="Amazon KDP"><div class="cb"></div><span class="cico">📦</span><span class="clbl">Amazon KDP</span></label>
+    <label class="ci"><input type="checkbox" name="Cel" value="Empik Go"><div class="cb"></div><span class="cico">🏪</span><span class="clbl">Empik Go</span></label>
+    <label class="ci" style="grid-column:1/-1"><input type="checkbox" name="Cel" value="Inny cel"><div class="cb"></div><span class="cico">✏️</span><span class="clbl">Inny cel – opiszę w dodatkowych informacjach</span></label>
+  </div>
+</div>
+
+<!-- 5. ZAKRES -->
+<div class="fs rv" id="sec5">
+  <div class="fsh"><div class="fsn">5</div><div>
+    <div style="display:flex;align-items:center;gap:10px"><span class="fsi">⚙️</span><div class="fst">Zakres współpracy</div></div>
+    <div class="fsd">Zaznacz wszystko, co Cię interesuje.</div>
+  </div></div>
+  <div class="cg">
+    <label class="ci"><input type="checkbox" name="Zakres" value="Sam tekst – copywriting"><div class="cb"></div><span class="cico">✍️</span><span class="clbl">Sam tekst (copywriting)</span></label>
+    <label class="ci"><input type="checkbox" name="Zakres" value="Tekst + okładka"><div class="cb"></div><span class="cico">🖼️</span><span class="clbl">Tekst + okładka</span></label>
+    <label class="ci"><input type="checkbox" name="Zakres" value="Kompletny projekt A–Z"><div class="cb"></div><span class="cico">💎</span><span class="clbl">Kompletny projekt A–Z</span></label>
+    <label class="ci"><input type="checkbox" name="Zakres" value="Skład i formatowanie"><div class="cb"></div><span class="cico">📐</span><span class="clbl">Skład i formatowanie</span></label>
+    <label class="ci"><input type="checkbox" name="Zakres" value="Publikacja Amazon KDP"><div class="cb"></div><span class="cico">📦</span><span class="clbl">Publikacja Amazon KDP</span></label>
+    <label class="ci"><input type="checkbox" name="Zakres" value="Publikacja Empik Go"><div class="cb"></div><span class="cico">🏪</span><span class="clbl">Publikacja Empik Go</span></label>
+    <label class="ci"><input type="checkbox" name="Zakres" value="Grafiki reklamowe"><div class="cb"></div><span class="cico">🎨</span><span class="clbl">Grafiki reklamowe</span></label>
+    <label class="ci"><input type="checkbox" name="Zakres" value="Pomoc marketingowa"><div class="cb"></div><span class="cico">📣</span><span class="clbl">Pomoc marketingowa</span></label>
+  </div>
+</div>
+
+<!-- 6. STYL -->
+<div class="fs rv" id="sec6">
+  <div class="fsh"><div class="fsn">6</div><div>
+    <div style="display:flex;align-items:center;gap:10px"><span class="fsi">🎨</span><div class="fst">Styl i wygląd</div></div>
+    <div class="fsd">Opisz estetykę – typografia, układ, kolorystyka.</div>
+  </div></div>
+  <div class="fg"><label>Jak ma wyglądać Twój ebook lub książka?</label>
+    <textarea name="Styl i wygląd" rows="4" placeholder="np. Minimalistycznie, jasne tło, złote akcenty. Bardzo premium, jak luksusowy poradnik. Albo ciemne, mroczne tło, nowoczesne i surowe..."></textarea>
+    <div class="hint">✦ Możesz wpisać: „podobnie jak [znana marka/autor]"</div>
+  </div>
+  <div class="sd"><div class="sdl"></div><span class="sdt">Preferowana kolorystyka</span><div class="sdl"></div></div>
+  <div class="cg">
+    <label class="ci"><input type="checkbox" name="Kolory" value="Biały + złoto (premium)"><div class="cb"></div><span class="cico">⚪</span><span class="clbl">Biały + złoto (premium)</span></label>
+    <label class="ci"><input type="checkbox" name="Kolory" value="Ciemny + złoto (luksus)"><div class="cb"></div><span class="cico">⚫</span><span class="clbl">Ciemny + złoto (luksus)</span></label>
+    <label class="ci"><input type="checkbox" name="Kolory" value="Zielony (natura, wellness)"><div class="cb"></div><span class="cico">🟢</span><span class="clbl">Zielony (natura, wellness)</span></label>
+    <label class="ci"><input type="checkbox" name="Kolory" value="Niebieski (biznes, tech)"><div class="cb"></div><span class="cico">🔵</span><span class="clbl">Niebieski (biznes, tech)</span></label>
+    <label class="ci" style="grid-column:1/-1"><input type="checkbox" name="Kolory" value="Inne – opisuję powyżej"><div class="cb"></div><span class="cico">🎨</span><span class="clbl">Inne – opisuję w polu powyżej</span></label>
+  </div>
+</div>
+
+<!-- 7. OBJĘTOŚĆ -->
+<div class="fs rv" id="sec7">
+  <div class="fsh"><div class="fsn">7</div><div>
+    <div style="display:flex;align-items:center;gap:10px"><span class="fsi">📄</span><div class="fst">Planowana objętość</div></div>
+    <div class="fsd">Orientacyjna liczba stron gotowego produktu.</div>
+  </div></div>
+  <div class="fg"><label>Ile stron?</label>
+    <div class="sw"><select name="Ilość stron">
+      <option value="">Wybierz orientacyjną objętość...</option>
+      <option>Do 20 stron – krótki ebook, lead magnet</option>
+      <option>20–40 stron – ebook na sprzedaż</option>
+      <option>40–60 stron – rozbudowany poradnik</option>
+      <option>60+ stron – pełna książka</option>
+      <option>Nie wiem – pomóżcie mi zdecydować</option>
+    </select></div>
+  </div>
+</div>
+
+<!-- 8. MATERIAŁY -->
+<div class="fs rv" id="sec8">
+  <div class="fsh"><div class="fsn">8</div><div>
+    <div style="display:flex;align-items:center;gap:10px"><span class="fsi">📁</span><div class="fst">Materiały od Ciebie</div></div>
+    <div class="fsd">Co już masz, a co chcesz nam zlecić?</div>
+  </div></div>
+  <div class="cg">
+    <label class="ci"><input type="checkbox" name="Materiały" value="Mam gotowy tekst"><div class="cb"></div><span class="cico">📝</span><span class="clbl">Mam gotowy tekst</span></label>
+    <label class="ci"><input type="checkbox" name="Materiały" value="Mam tylko pomysł"><div class="cb"></div><span class="cico">💭</span><span class="clbl">Mam tylko pomysł</span></label>
+    <label class="ci"><input type="checkbox" name="Materiały" value="Mam grafiki lub zdjęcia"><div class="cb"></div><span class="cico">🖼️</span><span class="clbl">Mam grafiki / zdjęcia</span></label>
+    <label class="ci"><input type="checkbox" name="Materiały" value="Nie mam nic – pełna realizacja"><div class="cb"></div><span class="cico">🚀</span><span class="clbl">Nie mam nic – pełna realizacja</span></label>
+  </div>
+</div>
+
+<!-- 9. INSPIRACJE -->
+<div class="fs rv" id="sec9">
+  <div class="fsh"><div class="fsn">9</div><div>
+    <div style="display:flex;align-items:center;gap:10px"><span class="fsi">✨</span><div class="fst">Inspiracje i przykłady</div></div>
+    <div class="fsd">Pokaż nam ebooki lub okładki, które Ci się podobają.</div>
+  </div></div>
+  <div class="fg"><label>Linki do inspiracji <span class="opt">(opcjonalnie)</span></label>
+    <textarea name="Inspiracje i linki" rows="3" placeholder="Wklej linki do ebooków, stron, okładek lub profili, które Ci się podobają..."></textarea>
+  </div>
+</div>
+
+<!-- 10. TERMIN -->
+<div class="fs rv" id="sec10">
+  <div class="fsh"><div class="fsn">10</div><div>
+    <div style="display:flex;align-items:center;gap:10px"><span class="fsi">⏰</span><div class="fst">Termin realizacji</div></div>
+    <div class="fsd">Kiedy chcesz mieć gotowy produkt?</div>
+  </div></div>
+  <div class="fg"><label>Preferowany czas realizacji</label>
+    <div class="sw"><select name="Termin realizacji">
+      <option value="">Wybierz termin...</option>
+      <option>Jak najszybciej (tryb ekspresowy)</option>
+      <option>Do 7 dni roboczych</option>
+      <option>Do 14 dni roboczych</option>
+      <option>Bez pośpiechu – zróbcie to dobrze</option>
+      <option>Ustalimy termin po kontakcie</option>
+    </select></div>
+  </div>
+</div>
+
+<!-- 11. DODATKOWE -->
+<div class="fs rv" id="sec11">
+  <div class="fsh"><div class="fsn">11</div><div>
+    <div style="display:flex;align-items:center;gap:10px"><span class="fsi">💬</span><div class="fst">Dodatkowe informacje</div></div>
+    <div class="fsd">Napisz wszystko, co jest dla Ciebie ważne w projekcie.</div>
+  </div></div>
+  <div class="fg"><label>Coś, o czym powinniśmy wiedzieć <span class="opt">(opcjonalnie)</span></label>
+    <textarea name="Dodatkowe informacje" rows="6" placeholder="Twoje obawy, wymagania, przykłady autorów, budżet, informacje o grupie docelowej..."></textarea>
+  </div>
+</div>
+
+<!-- 12. ZGODY -->
+<div class="cs rv" id="sec12">
+  <div class="csh">🔒 Zgody i potwierdzenia</div>
+  <label class="csit">
+    <input type="checkbox" name="Regulamin" value="Zaakceptowany" required>
+    <div class="csbx"></div>
+    <div class="cstxt"><strong>Akceptuję regulamin</strong> świadczenia usług GhostCraft. Zapoznałem/-am się z warunkami współpracy i akceptuję je w całości.</div>
+  </label>
+  <label class="csit">
+    <input type="checkbox" name="Prawa autorskie" value="Rozumiem i akceptuję" required>
+    <div class="csbx"></div>
+    <div class="cstxt"><strong>Rozumiem, że po opłaceniu projektu</strong> otrzymuję pełne prawa autorskie do stworzonej treści i projektu. GhostCraft pozostaje ghost writerem – produkt wychodzi pod moim nazwiskiem.</div>
+  </label>
+  <label class="csit">
+    <input type="checkbox" name="RODO" value="Wyrażam zgodę">
+    <div class="csbx"></div>
+    <div class="cstxt">Wyrażam zgodę na przetwarzanie moich danych osobowych w celu przygotowania wyceny i kontaktu.</div>
+  </label>
+</div>
+
+<!-- SUBMIT -->
+<div class="sbw rv">
+  <p class="sbn">Po wypełnieniu formularza skontaktujemy się z Tobą <strong>w ciągu 24 godzin</strong> z bezpłatną wyceną.</p>
+  <button type="submit" class="sb" id="sb">
+    <span>Wyślij projekt do wyceny</span>
+    <span class="arr">→</span>
+  </button>
+  <div class="trust">
+    <div class="ti"><span class="tic">✦</span>Bezpłatna wycena</div>
+    <div class="ti"><span class="tic">✦</span>Odpowiedź w 24h</div>
+    <div class="ti"><span class="tic">✦</span>Pełne prawa autorskie</div>
+    <div class="ti"><span class="tic">✦</span>Zero zobowiązań</div>
+  </div>
+</div>
+
+</form>
+</div>
+
+<script>
+// REVEAL
+const io=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('vis');upd()}})},{threshold:.1,rootMargin:'0px 0px -20px 0px'});
+document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+
+// PROGRESS
+function upd(){
+  const s=document.querySelectorAll('[id^="sec"]');let a=1;
+  s.forEach((x,i)=>{if(x.getBoundingClientRect().top<window.innerHeight*.65)a=i+1;});
+  document.getElementById('si').textContent='Sekcja '+Math.min(a,12)+' / 12';
+  for(let i=1;i<=12;i++){
+    const d=document.getElementById('pb'+i),l=d?.nextElementSibling;
+    if(!d)continue;
+    d.classList.remove('a','done');l?.classList.remove('a');
+    if(i<a){d.classList.add('done');d.textContent='✓';}
+    else if(i===a){d.classList.add('a');l?.classList.add('a');}
+    else{d.textContent=i;}
+  }
+}
+window.addEventListener('scroll',upd,{passive:true});
+
+// WALIDACJA
+document.getElementById('mf').addEventListener('submit',function(e){
+  const n=document.querySelector('[name="Imie i nazwisko"]').value.trim();
+  const em=document.querySelector('[name="Email"]').value.trim();
+  const t=document.querySelector('[name="Temat ebooka"]').value.trim();
+  const r=document.querySelector('[name="Regulamin"]').checked;
+  const p=document.querySelector('[name="Prawa autorskie"]').checked;
+  if(!n||!em||!t||!r||!p){
+    e.preventDefault();
+    [['Imie i nazwisko','⚠ Wpisz imię i nazwisko'],['Email','⚠ Podaj adres e-mail'],['Temat ebooka','⚠ Opisz temat projektu']].forEach(([f,m])=>{
+      const el=document.querySelector('[name="'+f+'"]');
+      if(el&&!el.value.trim()){el.style.borderColor='#C0392B';el.placeholder=m;setTimeout(()=>{el.style.borderColor='';},3000);}
+    });
+    if(!r||!p)document.querySelector('.cs').scrollIntoView({behavior:'smooth',block:'center'});
+    return;
+  }
+  const btn=document.getElementById('sb');
+  btn.innerHTML='<span>Wysyłanie...</span><span>⏳</span>';
+  btn.disabled=true;
+});
+</script>
+</body>
+</html>
