@@ -143,15 +143,13 @@ textarea{resize:vertical;min-height:110px;line-height:1.7}
 
 <div class="fw">
 
-<!-- FORMSUBMIT.CO – wysyła maile na przemyslaw.ebiznes@gmail.com -->
-<form action="https://formsubmit.co/przemyslaw.ebiznes@gmail.com" method="POST" id="mf">
+<!-- WEB3FORMS – wysyła AJAX, klient zostaje na stronie -->
+<form id="mf" novalidate>
 
-  <!-- Konfiguracja Formsubmit -->
-  <input type="hidden" name="_subject" value="📚 Nowe zapytanie GhostCraft!">
-  <input type="hidden" name="_captcha" value="false">
-  <input type="hidden" name="_template" value="table">
-  <input type="hidden" name="_next" value="https://przemyslawbiznes-cmd.github.io/ghostcraft/dziekujemy.html">
-  <input type="text" name="_honey" style="display:none">
+  <input type="hidden" name="access_key" value="881173">
+  <input type="hidden" name="subject" value="📚 Nowe zapytanie GhostCraft!">
+  <input type="hidden" name="from_name" value="GhostCraft Formularz">
+  <input type="checkbox" name="botcheck" style="display:none">
 
 <!-- 1 -->
 <div class="fs rv" id="sec1">
@@ -360,14 +358,14 @@ const io=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.targe
 document.querySelectorAll('.rv').forEach(el=>io.observe(el));
 function upd(){const s=document.querySelectorAll('[id^="sec"]');let a=1;s.forEach((x,i)=>{if(x.getBoundingClientRect().top<window.innerHeight*.65)a=i+1;});document.getElementById('si').textContent='Sekcja '+Math.min(a,12)+' / 12';for(let i=1;i<=12;i++){const d=document.getElementById('pb'+i),l=d?.nextElementSibling;if(!d)continue;d.classList.remove('a','done');l?.classList.remove('a');if(i<a){d.classList.add('done');d.textContent='✓';}else if(i===a){d.classList.add('a');l?.classList.add('a');}else{d.textContent=i;}}}
 window.addEventListener('scroll',upd,{passive:true});
-document.getElementById('mf').addEventListener('submit',function(e){
+document.getElementById('mf').addEventListener('submit',async function(e){
+  e.preventDefault();
   const n=document.querySelector('[name="Imie i nazwisko"]').value.trim();
   const em=document.querySelector('[name="Email klienta"]').value.trim();
   const t=document.querySelector('[name="Temat ebooka"]').value.trim();
   const r=document.querySelector('[name="Regulamin"]').checked;
   const p=document.querySelector('[name="Prawa autorskie"]').checked;
   if(!n||!em||!t||!r||!p){
-    e.preventDefault();
     [['Imie i nazwisko','⚠ Wpisz imię i nazwisko'],['Email klienta','⚠ Podaj adres e-mail'],['Temat ebooka','⚠ Opisz temat projektu']].forEach(([f,m])=>{const el=document.querySelector('[name="'+f+'"]');if(el&&!el.value.trim()){el.style.borderColor='#C0392B';el.placeholder=m;setTimeout(()=>{el.style.borderColor='';},3000);}});
     if(!r||!p)document.querySelector('.cs').scrollIntoView({behavior:'smooth',block:'center'});
     return;
@@ -375,6 +373,26 @@ document.getElementById('mf').addEventListener('submit',function(e){
   const btn=document.getElementById('sb');
   btn.innerHTML='<span>Wysyłanie...</span><span>⏳</span>';
   btn.disabled=true;
+
+  const formData = new FormData(this);
+  try {
+    const res = await fetch('https://api.web3forms.com/submit', {
+      method:'POST',
+      body: formData
+    });
+    const data = await res.json();
+    if(data.success){
+      document.getElementById('sov').classList.add('show');
+    } else {
+      btn.innerHTML='<span>Wyślij projekt do wyceny</span><span>→</span>';
+      btn.disabled=false;
+      alert('Błąd wysyłania. Spróbuj ponownie.');
+    }
+  } catch(err){
+    btn.innerHTML='<span>Wyślij projekt do wyceny</span><span>→</span>';
+    btn.disabled=false;
+    alert('Błąd połączenia. Sprawdź internet i spróbuj ponownie.');
+  }
 });
 </script>
 </body>
